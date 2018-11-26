@@ -1,0 +1,8 @@
+node {
+ stage('Stage1') {
+    print "Stage1"
+  }
+ stage('Stage2') {
+    print "Stage2"
+  }
+}
