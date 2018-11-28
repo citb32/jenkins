@@ -1,5 +1,5 @@
 node() {
-  stage() {
+  stage('sample') {
    withCredentials([[$class: 'UsernamePassword', credentialsId: 'TERRAFORM-KEYS',
 usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
 
