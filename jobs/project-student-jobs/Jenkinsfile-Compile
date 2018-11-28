@@ -4,15 +4,25 @@ node() {
         git url: 'https://github.com/citb32/student-with-api.git'
     
         withMaven(
-            // Maven installation declared in the Jenkins "Global Tool Configuration"
             maven: 'MAVEN-3.5.0',
-            // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
-            // Maven settings and global settings can also be defined in Jenkins Global Tools Configuration
             mavenLocalRepo: '.repository') {
-    
-        // Run the maven build
-        sh "mvn compile"
-    
-        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe & FindBugs reports...
-  }
+            sh "mvn compile"
+        }
+    }
+
+    stage('CodeAnalysis-Sonar') {
+        withMaven(
+            maven: 'MAVEN-3.5.0',
+            mavenLocalRepo: '.repository') {
+            sh "mvn sonar:sonar -Dsonar.projectKey=citb32_student-with-api -Dsonar.organization=citb32 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ada098716846b418d876ae60b13bbac59c0bc71a"
+        }
+    }
+
+    stage('Packaging-WAR') {
+        withMaven(
+            maven: 'MAVEN-3.5.0',
+            mavenLocalRepo: '.repository') {
+            sh "mvn package"
+        }
+    }
 }
