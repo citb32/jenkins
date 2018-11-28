@@ -30,6 +30,7 @@ node() {
         git url: 'https://github.com/citb32/terraform.git'
         sh '''
 cd student-proj-test-env
+terraform init
 terraform plan
 '''
     }
