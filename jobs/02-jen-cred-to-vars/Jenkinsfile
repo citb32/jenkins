@@ -1,0 +1,9 @@
+node() {
+  stage() {
+   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'TERRAFORM-KEYS',
+usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+
+sh 'echo uname=$USERNAME pwd=$PASSWORD'
+ }
+  }
+}
