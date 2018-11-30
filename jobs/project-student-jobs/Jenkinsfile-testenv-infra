@@ -1,0 +1,16 @@
+node() {
+    stage('Setup-Test-Infra'){
+        withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'TERRAFORM-KEYS',
+usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+
+        git url: 'https://github.com/citb32/terraform.git'
+        sh '''
+export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+cd student-proj-test-env
+terraform init
+terraform apply -auto-approve
+'''
+        }
+    }
+}
