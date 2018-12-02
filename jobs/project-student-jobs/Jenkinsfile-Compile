@@ -35,7 +35,7 @@ node() {
 
     stage('Deployment') {
         dir ('ANSIBLE') {
-        git url: 'https://github.com/citb32/student-with-api.git'
+        git url: 'https://github.com/citb32/ansible-pull.git'
         wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
 ls
