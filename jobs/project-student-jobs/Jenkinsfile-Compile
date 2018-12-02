@@ -38,8 +38,8 @@ node() {
         git url: 'https://github.com/citb32/ansible-pull.git'
         wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
-ls
-pwd
+aws ec2 describe-instances --filter "Name=tag:Name,Values=Test-Env-Node" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*][PublicIpAddress]" --output text >hosts
+ansible-playbook -i hosts --private-key=/var/lib/jenkins/devops.pem deploy.yml
 '''
     } } }
 }
