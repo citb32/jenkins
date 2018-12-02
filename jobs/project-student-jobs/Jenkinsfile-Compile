@@ -29,4 +29,12 @@ node() {
     stage('Setup-Test-Infra'){
 	build job: 'StudentProj-Test-Env', parameters: [string(name: 'ACTION', value: 'CREATE')]
         }
+
+    stage('Deployment') {
+        wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
+        sh '''
+ls
+pwd
+'''
+    }
 }
