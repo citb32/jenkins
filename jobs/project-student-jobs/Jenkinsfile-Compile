@@ -1,6 +1,6 @@
 node() {
     stage ('Build') {
- 
+        dir ('MAVEN') {
         git url: 'https://github.com/citb32/student-with-api.git'
     
         withMaven(
@@ -8,22 +8,25 @@ node() {
             mavenLocalRepo: '.repository') {
             sh "mvn compile"
         }
+        }
     }
 
     stage('CodeAnalysis-Sonar') {
+        dir ('MAVEN') {
         withMaven(
             maven: 'MAVEN-3.5.0',
             mavenLocalRepo: '.repository') {
             sh "mvn sonar:sonar -Dsonar.projectKey=citb32_student-with-api -Dsonar.organization=citb32 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=ada098716846b418d876ae60b13bbac59c0bc71a"
-        }
+        } }
     }
 
     stage('Packaging-WAR') {
+        dir ('MAVEN') { 
         withMaven(
             maven: 'MAVEN-3.5.0',
             mavenLocalRepo: '.repository') {
             sh "mvn package"
-        }
+        } }
     }
 
     stage('Setup-Test-Infra'){
@@ -31,11 +34,12 @@ node() {
         }
 
     stage('Deployment') {
+        dir ('ANSIBLE') {
         git url: 'https://github.com/citb32/student-with-api.git'
         wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
 ls
 pwd
 '''
-    } }
+    } } }
 }
