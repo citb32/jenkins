@@ -39,7 +39,7 @@ node() {
         wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm']) {
         sh '''
 aws ec2 describe-instances --filter "Name=tag:Name,Values=Test-Env-Node" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*][PublicIpAddress]" --output text >hosts
-ansible-playbook -vvv -i hosts --private-key=/var/lib/jenkins/devops.pem deploy.yml
+ansible-playbook -vvv -i hosts -u centos --private-key=/var/lib/jenkins/devops.pem deploy.yml
 '''
     } } }
 }
