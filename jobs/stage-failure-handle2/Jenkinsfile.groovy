@@ -6,6 +6,7 @@ node() {
         stage('STAGE2'){
             sh 'exit 0'
         }
+        build_ok = true
     }catch(e) {
         build_ok = false
     }
