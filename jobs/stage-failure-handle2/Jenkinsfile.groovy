@@ -4,7 +4,7 @@ node() {
     }
     try {
         stage('STAGE2'){
-            sh 'exit 1'
+            sh 'exit 0'
         }
     }catch(e) {
         build_ok = false
