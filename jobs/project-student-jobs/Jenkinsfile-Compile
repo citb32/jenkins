@@ -49,7 +49,11 @@ ansible-playbook -v -i hosts -u centos --private-key=/var/lib/jenkins/devops.pem
             withMaven(
                 maven: 'MAVEN-3.5.0',
                 mavenLocalRepo: '.repository') {
-                sh 'mvn clean install "-Dremote=true" "-DseleniumGridURL=http://raghudevops32:eb8b2078-882e-44de-a350-b655aeb5ba1f@ondemand.saucelabs.com:80/wd/hub" "-Dplatform=Windows" "-Dbrowser=Chrome" "-Dbrowserversion=51" "-Doverwrite.binaries=true"'
+                sh '''
+PUBIP=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=Test-Env-Node" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*][PublicIpAddress]" --output text)
+sed -i -e "s/IPADDRESS/$PUBIP/" src/test/java/framework/CrudStudent.java
+mvn clean install "-Dremote=true" "-DseleniumGridURL=http://raghudevops32:eb8b2078-882e-44de-a350-b655aeb5ba1f@ondemand.saucelabs.com:80/wd/hub" "-Dplatform=Windows" "-Dbrowser=Chrome" "-Dbrowserversion=51" "-Doverwrite.binaries=true"
+'''
         }
     }
 }
