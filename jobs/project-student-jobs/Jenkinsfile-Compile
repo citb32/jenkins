@@ -1,8 +1,15 @@
 node() {
-    stage ('Build') {
+    stage('Setup-Test-Infra'){
+	build job: 'StudentProj-Test-Env', parameters: [string(name: 'ACTION', value: 'CREATE')]
+    sh 'terraform output db_address >/tmp/dbaddress' 
+        }
+
+        stage ('Build') {
         dir ('MAVEN') {
         git url: 'https://github.com/citb32/student-with-api.git'
-    
+        sh '''
+DBADDRESS=$(cat /tmp/dbaddress)
+sed -i -e "s/DBADDRESS/$DBADDRESS/" src/main/resources/application.properties
         withMaven(
             maven: 'MAVEN-3.5.0',
             mavenLocalRepo: '.repository') {
@@ -28,10 +35,6 @@ node() {
             sh "mvn package"
         } }
     }
-
-    stage('Setup-Test-Infra'){
-	build job: 'StudentProj-Test-Env', parameters: [string(name: 'ACTION', value: 'CREATE')]
-        }
 
     stage('Deployment') {
         dir ('ANSIBLE') {
