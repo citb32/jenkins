@@ -12,6 +12,7 @@ export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 cd student-proj-test-env
 terraform init
 terraform apply -auto-approve
+terraform output db_address >/tmp/dbaddress
 '''
                 }
             }

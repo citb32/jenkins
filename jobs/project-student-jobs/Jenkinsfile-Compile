@@ -1,7 +1,6 @@
 node() {
     stage('Setup-Test-Infra'){
 	build job: 'StudentProj-Test-Env', parameters: [string(name: 'ACTION', value: 'CREATE')]
-    sh 'terraform output db_address >/tmp/dbaddress' 
         }
 
         stage ('Build') {
