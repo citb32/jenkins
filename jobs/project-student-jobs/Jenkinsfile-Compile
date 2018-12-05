@@ -10,6 +10,7 @@ node() {
         sh '''
 DBADDRESS=$(cat /tmp/dbaddress)
 sed -i -e "s/DBADDRESS/$DBADDRESS/" src/main/resources/application.properties
+'''
         withMaven(
             maven: 'MAVEN-3.5.0',
             mavenLocalRepo: '.repository') {
