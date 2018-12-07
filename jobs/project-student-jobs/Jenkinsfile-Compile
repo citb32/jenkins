@@ -60,4 +60,14 @@ aws sns publish --topic-arn "arn:aws:sns:us-east-1:973714476881:Jenkins-Notifiat
 '''
         }
     } }
+
+    stage('API-Testing') {
+        dir ('SELENIUM') {
+            git url: 'https://github.com/citb32/selenium-sauce.git'
+            sh '''
+PUBIP=$(aws ec2 describe-instances --filter "Name=tag:Name,Values=Test-Env-Node" "Name=instance-state-name,Values=running" --query "Reservations[*].Instances[*][PublicIpAddress]" --output text)
+python scripts/api-test.py $PUBIP
+'''
+        }
+    }
 }
